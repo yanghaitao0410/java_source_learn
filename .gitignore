@@ -1,0 +1,16 @@
+.idea/
+*.iml
+**/generated
+*.registry
+*.registry.lock
+.DS_Store
+target/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+pom.xml.versionsBackup
+.log
+.log.*
+applicationLogPath_IS_UNDEFINED/
