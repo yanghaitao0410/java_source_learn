@@ -230,7 +230,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
 
     /**
-     * The default initial capacity - MUST be a power of two.
+     * The default initial capacity - MUST be a power of two.\
+     * 默认map初始容量16 ：假如想修改，只能改成2的N次幂
      */
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
 
@@ -472,6 +473,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * (16) and the default load factor (0.75).
      */
     public HashMap() {
+        //只设置扩展因子 其它字段都使用默认值
         this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
     }
 
@@ -621,14 +623,22 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * @param evict if false, the table is in creation mode.
      * @return previous value, or null if none
      */
-    final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
-                   boolean evict) {
-        Node<K,V>[] tab; Node<K,V> p; int n, i;
+    final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+        Node<K,V>[] tab;
+        Node<K,V> p;
+        int n, //长度
+                i;
+
+        //刚创建好map的时候 table为null或者长度为0 ，分配
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
+
+        //key定位到map中位置算法：(n - 1) & hash
+        // 定位到的位置没有节点：新增节点
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
+            //定位到的位置有节点 覆盖操作
             Node<K,V> e; K k;
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
